@@ -49,6 +49,14 @@ func UpdateOption(c *gin.Context) {
 			})
 			return
 		}
+	case "OidcAuthEnabled":
+		if option.Value == "true" && common.OidcClientId == "" {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "无法启用 OIDC 登录，请先填入 OIDC Client ID 以及 OIDC Client Secret！",
+			})
+			return
+		}
 	case "WeChatAuthEnabled":
 		if option.Value == "true" && common.WeChatServerAddress == "" {
 			c.JSON(http.StatusOK, gin.H{

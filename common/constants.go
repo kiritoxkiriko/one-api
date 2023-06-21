@@ -38,6 +38,7 @@ var PasswordLoginEnabled = true
 var PasswordRegisterEnabled = true
 var EmailVerificationEnabled = false
 var GitHubOAuthEnabled = false
+var OidcAuthEnabled = false
 var WeChatAuthEnabled = false
 var TurnstileCheckEnabled = false
 var RegisterEnabled = true
@@ -52,6 +53,12 @@ var SMTPToken = ""
 
 var GitHubClientId = ""
 var GitHubClientSecret = ""
+
+// OidcClientId TODO: set const somewhere else
+var OidcClientId = ""
+var OidcClientSecret = ""
+var OidcProviderUrl = ""
+var OidcTimeout = 5 * time.Second
 
 var WeChatServerAddress = ""
 var WeChatServerToken = ""
