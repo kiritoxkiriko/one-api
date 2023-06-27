@@ -22,6 +22,8 @@ func GetStatus(c *gin.Context) {
 			"oidc_auth":           common.OidcAuthEnabled,
 			"oidc_client_id":      common.OidcClientId,
 			"oidc_provider_url":   common.OidcProviderUrl,
+			"oidc_provider_name":  common.OidcProviderName,
+			"oidc_auth_url":       common.OidcAuthUrl,
 			"system_name":         common.SystemName,
 			"logo":                common.Logo,
 			"footer_html":         common.Footer,

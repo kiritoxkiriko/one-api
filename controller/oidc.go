@@ -11,6 +11,11 @@ import (
 	"one-api/common"
 	"one-api/model"
 	"strconv"
+	"time"
+)
+
+var (
+	provider *oidc.Provider
 )
 
 // OidcClaim is the struct of OIDC claims we need
@@ -30,7 +35,6 @@ func OidcAuth(c *gin.Context) {
 		return
 	}
 
-	// TODO: set oidc enable value at somewhere else
 	if !common.OidcAuthEnabled {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -159,12 +163,7 @@ func getOIDCUserInfoByCode(ctx context.Context, code string) (*OidcClaim, error)
 	// set timeout
 	ctx, cancel := context.WithTimeout(ctx, common.OidcTimeout)
 	defer cancel()
-
-	provider, err := oidc.NewProvider(ctx, common.OidcProviderUrl)
-	if err != nil {
-		return nil, fmt.Errorf("OIDC provider error: %w", err)
-	}
-	verifyer := provider.Verifier(&oidc.Config{
+	verifier := provider.Verifier(&oidc.Config{
 		ClientID: common.OidcClientId,
 	})
 
@@ -185,7 +184,7 @@ func getOIDCUserInfoByCode(ctx context.Context, code string) (*OidcClaim, error)
 		return nil, fmt.Errorf("OIDC ID token missing: %w", err)
 	}
 
-	idToken, err := verifyer.Verify(ctx, rawIdToken)
+	idToken, err := verifier.Verify(ctx, rawIdToken)
 	if err != nil {
 		return nil, fmt.Errorf("OIDC verify error: %w", err)
 	}
@@ -196,4 +195,21 @@ func getOIDCUserInfoByCode(ctx context.Context, code string) (*OidcClaim, error)
 		return nil, fmt.Errorf("OIDC claims error: %w", err)
 	}
 	return claim, nil
+}
+
+func InitOidcProvider() {
+	var err error
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	provider, err = oidc.NewProvider(ctx, common.OidcProviderUrl)
+	if err != nil {
+		panic(fmt.Errorf("OIDC provider init error: %w", err))
+	}
+
+	if provider.Endpoint().AuthURL == "" {
+		panic("OIDC provider auth url is empty")
+	}
+	common.OidcAuthUrl = provider.Endpoint().AuthURL
+	return
 }

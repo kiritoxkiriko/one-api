@@ -174,6 +174,8 @@ func updateOptionMap(key string, value string) (err error) {
 		common.OidcClientId = value
 	case "OidcClientSecret":
 		common.OidcClientSecret = value
+	case "OidcProviderName":
+		common.OidcProviderName = value
 	case "OidcProviderUrl":
 		common.OidcProviderUrl = value
 	case "Footer":

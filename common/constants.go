@@ -54,10 +54,13 @@ var SMTPToken = ""
 var GitHubClientId = ""
 var GitHubClientSecret = ""
 
-// OidcClientId TODO: set const somewhere else
 var OidcClientId = ""
 var OidcClientSecret = ""
+var OidcProviderName = ""
 var OidcProviderUrl = ""
+
+// OidcAuthUrl Retrieve from endpoint, no need to set manually
+var OidcAuthUrl = ""
 var OidcTimeout = 5 * time.Second
 
 var WeChatServerAddress = ""

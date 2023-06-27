@@ -74,6 +74,9 @@ func main() {
 		go controller.AutomaticallyTestChannels(frequency)
 	}
 
+	// Initialize OIDC provider
+	controller.InitOidcProvider()
+
 	// Initialize HTTP server
 	server := gin.Default()
 	// This will cause SSE not to work!!!
